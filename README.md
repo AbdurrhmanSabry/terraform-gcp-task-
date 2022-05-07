@@ -67,13 +67,19 @@ docker build -t python-app:alpine .
 ```bash
 docker tag gcr.io/google-samples/hello-app:1.0 gcr.io/PROJECT_ID/quickstart-image:tag1
 ```
-4.  Configure Docker
+4. Pull the redis image from dockerhub and tag it with the registry name
+```bash
+docker pull redis:latest
+docker tag redis gcr.io/PROJECT_ID/redis:latest
+```
+5.  Configure Docker
 ```bash
 gcloud auth configure-docker
 ```
-5. Push the image to Container Registry
+6. Push the App image and redis to Container Registry
 ```bash
 docker push gcr.io/PROJECT_ID/quickstart-image:tag1
+docker push gcr.io/PROJECT_ID/redis:latest
 ```
 ### Accessing the private VM
 1. Generate key to the service account of the 

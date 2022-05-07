@@ -13,7 +13,7 @@ spec:
         app: redis
     spec:
       containers:
-      - image: redis
+      - image: gcr.io/planar-outpost-348511/redis:latest
         name: redis
         ports:
         - containerPort: 6379
