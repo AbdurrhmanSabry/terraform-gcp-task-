@@ -1,4 +1,4 @@
-# Infrastucture on GCP
+# Provisioning the Infrastucture on GCP using Terraform
 
 This code is used to provision an infrasturcture on GCP.
 ## Project Info
@@ -47,7 +47,25 @@ terraform workspace new name
 ```bash
 terraform apply -var-file namefile.tfvars
 ```
-
+### Containerizing the application
+To build an image of the application do the following: 
+1. Go to  the directory with Dockerfile
+2. Build the image
+```bash
+docker build -t python-app:alpine .
+```
+3. Tag the image with a registry name
+```bash
+docker tag gcr.io/google-samples/hello-app:1.0 gcr.io/PROJECT_ID/quickstart-image:tag1
+```
+4.  Configure Docker
+```bash
+gcloud auth configure-docker
+```
+5. Push the image to Container Registry
+```bash
+docker push gcr.io/PROJECT_ID/quickstart-image:tag1
+```
 ### Accessing the private VM
 1. Generate key to the service account of the 
 ```bash
