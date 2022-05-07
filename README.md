@@ -12,7 +12,7 @@ This code is used to provision an infrasturcture on GCP.
 ### Provisioning the infrastucture using terraform
 First clone this repo
 ```bash
-
+git clone https://github.com/AbdurrhmanSabry/terraform-gcp-task-.git
 ```
 
 Then, To be able to use terraform with GCP you need to:
@@ -48,38 +48,50 @@ terraform workspace new name
 terraform apply -var-file namefile.tfvars
 ```
 
-gcloud iam service-accounts keys create FILE_NAME.json --iam-account=NAME@PROJECT_ID.iam.
-gserviceaccount.com
+### Accessing the private VM
+1. Generate key to the service account of the 
+```bash
+gcloud iam service-accounts keys create FILE_NAME.json --iam-account=NAME@PROJECT_ID.iam.gserviceaccount.com
+```
+2. Copy the file to the VM 
+```bash
 gcloud compute scp LOCAL_FILE_PATH VM_NAME:~
-gcloud compute scp --recurse  kubernetes/ VM_NAME:kubernetes
+```
+3. Access the vm using the ssh through the IAP tunnels
+```bash 
 gcloud compute ssh --zone Zone VM_NAME  --tunnel-through-iap --project Project
+```
+4. Activate the service account 
+```bash
 gcloud auth activate-service-account [ACCOUNT] --key-file=KEY_FILE
+```
+
+### Accessing the kubernetes cluster and Deploying the components
+
+1. Copy the kubernetes definition files to the VM
+```bash
+gcloud compute scp --recurse  kubernetes/ VM_NAME:kubernetes
+```
+2. Inside the VM, install the kubectl util after switching to the root user
+```bash
 sudo -i
 yum install kubectl -y
+```
+3. Get the credientials to access the cluster
+```bash
 gcloud container clusters get-credentials CLUSTER_NAME --region REGION --project PROJECT
+```
+
+4. Deploy the components
+```bash
 kubectl apply -f kubernetes/redis-deployment.yaml
 kubectl apply -f kubernetes/redis-svc.yaml
 kubectl apply -f kubernetes/app-deployment.yaml
 kubectl apply -f kubernetes/nodePortService.yaml
 kubectl apply -f kubernetes/ingress.yaml
-### Containerizing the application
-To build an image of the application do the following: 
-1. Go to  the directory with Dockerfile
-2. Build the image
-```bash
-docker build -t python-app:alpine .
 ```
-3. Tag the image with a registry name
-```bash
-docker tag gcr.io/google-samples/hello-app:1.0 gcr.io/PROJECT_ID/quickstart-image:tag1
-```
-4.  Configure Docker
-```bash
-gcloud auth configure-docker
-```
-5. Push the image to Container Registry
-```bash
-docker push gcr.io/PROJECT_ID/quickstart-image:tag1
-```
+The result should look like this
+<img src="./photos/ingress-img.jpg" alt="result"/>
+
 
 
