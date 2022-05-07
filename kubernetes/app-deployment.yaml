@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pthyon-app-deployment
+  name: pthyon-app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pthyon-app
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pthyon-app
+    spec:
+      containers:
+      - image: gcr.io/planar-outpost-348511/python-app:alpine
+        name: python-app 
+        ports:
+        - containerPort: 8000
+        env:
+          - name: REDIS_HOST
+            value:  redis-svc.default.svc.cluster.local 
