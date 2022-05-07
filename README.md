@@ -1,7 +1,16 @@
-# Provisioning the Infrastucture on GCP using Terraform
-
-This code is used to provision an infrasturcture on GCP.
+# Provisioning Infrastucture on GCP using Terraform
 ## Project Info
+This code is used to provision an infrasturcture on GCP.
+
+The infrasturcture includes:\
+a. One VPC \
+b. Two subnets (management subnet & restricted subnet)
+1. Management subnet has the following:\
+• NAT gateway \
+• Private VM
+2. Restricted subnet has the following:\
+• Private standard GKE cluster
+<img src="./photos/diagram-gke.jpg" alt="architecture"/>
 
 ### Tools Used
 
@@ -110,6 +119,3 @@ kubectl apply -f kubernetes/ingress.yaml
 ```
 The result should look like this
 <img src="./photos/ingress-img.jpg" alt="result"/>
-
-
-
